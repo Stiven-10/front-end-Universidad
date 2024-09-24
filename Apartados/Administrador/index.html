@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administrador</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        /* Sidebar */
+        .sidebar {
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            padding-top: 20px;
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+        .sidebar.collapsed {
+            width: 70px; /* Ancho del sidebar colapsado */
+        }
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar a:hover {
+            background-color: #495057; /* Color al pasar el mouse */
+        }
+        .sidebar a i {
+            margin-right: 10px; /* Espaciado entre ícono y texto */
+        }
+        .sidebar.collapsed a {
+            justify-content: center; /* Centrar contenido en colapsado */
+        }
+        .sidebar.collapsed a span {
+            display: none; /* Ocultar texto en colapsado */
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 250px; /* Alineación con el sidebar */
+            right: 0;
+            background-color: #343a40;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between; /* Espaciado entre elementos */
+            align-items: center; /* Alinear verticalmente */
+            color: white;
+            z-index: 1000; /* Asegurar que esté por encima del contenido */
+            transition: left 0.3s ease, width 0.3s ease; /* Transición suave */
+        }
+        .navbar.collapsed {
+            left: 70px; /* Ajustar posición cuando está colapsado */
+            width: calc(100% - 70px); /* Ajustar ancho cuando está colapsado */
+        }
+        
+        .navbar h4 {
+            margin: 0; /* Eliminar margen del título */
+        }
+
+        /* Main content */
+        .content {
+            margin-left: 250px; 
+            padding: 20px; 
+            transition: margin-left 0.3s ease; 
+        }
+        .content.collapsed {
+            margin-left: 70px; 
+        }
+
+        /* User info */
+        .user-info {
+            display: flex; 
+            align-items: center; 
+        }
+        .user-info img {
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            margin-right: 10px; 
+        }
+        
+        /* Logout icon */
+        .logout-icon {
+            margin-left: 20px; 
+            cursor: pointer; 
+        }
+
+        /* Chart container */
+        .chart-container {
+          margin-top: 20px; 
+      }
+
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <a href="#" id="menu-inicio"><i class="fas fa-home"></i> <span class="menu-text">Inicio</span></a>
+        <a href="#"><i class="fas fa-users"></i> <span class="menu-text">Gestión de Usuarios</span></a>
+        <a href="#"><i class="fas fa-briefcase"></i> <span class="menu-text">Gestión de Servicios</span></a>
+        <a href="#"><i class="fas fa-th-list"></i> <span class="menu-text">Tipos de Servicios</span></a>
+        <a href="#"><i class="fas fa-star"></i> <span class="menu-text">Reseñas</span></a>
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar" id="navbar">
+        <button class="btn btn-outline-light" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <h4>Panel de Administración</h4>
+        <div class="user-info">
+            <img src="https://via.placeholder.com/40" alt="Foto del usuario">
+            <span>Juan Pérez - Administrador</span>
+            <i class="fas fa-sign-out-alt logout-icon" title="Cerrar sesión"></i>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content" id="content">
+      <!-- Dynamic content will load here -->
+      <h2>Bienvenido al Panel de Administración</h2>
+
+      <!-- Charts Section -->
+      <div class="chart-container">
+          <h3>Gráficos de Actividades</h3>
+          <div class="row">
+              <!-- Card for Users Chart -->
+              <div class="col-md-4">
+                  <div class="card mb-4 shadow-sm">
+                      <div class="card-body">
+                          <h5 class="card-title">Usuarios Registrados</h5>
+                          <canvas id="usersChart"></canvas>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Card for Services Chart -->
+              <div class="col-md-4">
+                  <div class="card mb-4 shadow-sm">
+                      <div class="card-body">
+                          <h5 class="card-title">Tipos de Servicios</h5>
+                          <canvas id="servicesChart"></canvas>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Card for Reviews Chart -->
+              <div class="col-md-4">
+                  <div class="card mb-4 shadow-sm">
+                      <div class="card-body">
+                          <h5 class="card-title">Reseñas Recibidas</h5>
+                          <canvas id="reviewsChart"></canvas>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Placeholder for dynamic content -->
+      <p>Aquí puedes gestionar los usuarios, generar reportes y ajustar configuraciones.</p>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Chart.js Initialization Script -->
+    <script>
+      // Gráfico de Usuarios
+      new Chart(document.getElementById('usersChart'), {
+          type:'bar',
+          data:{
+              labels:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+              datasets:[{
+                  label:'Usuarios Registrados',
+                  data:[12,19,3,5,2,3],
+                  backgroundColor:'rgba(75,192,192,0.7)',
+                  borderColor:'rgba(75,192,192,1)',
+                  borderWidth :1
+              }]
+          },
+          options:{
+              responsive:true,
+              scales:{
+                  yAxes:[{
+                      ticks:{
+                          beginAtZero:true
+                      }
+                  }]
+              }
+          }
+      });
+
+      // Gráfico de Servicios
+      new Chart(document.getElementById('servicesChart'), {
+          type:'pie',
+          data:{
+              labels:['Servicios Básicos', 'Servicios Premium', 'Otros'],
+              datasets:[{
+                  label:'Tipos de Servicios',
+                  data:[300,50,100],
+                  backgroundColor:[
+                      'rgba(255,99,132,0.7)',
+                      'rgba(54,162,235,0.7)',
+                      'rgba(255,206,86,0.7)'
+                  ],
+                  borderColor:[
+                      'rgba(255,99,132,1)',
+                      'rgba(54,162,235,1)',
+                      'rgba(255,206,86,1)'
+                  ],
+                  borderWidth :1
+              }]
+          },
+          options:{
+              responsive:true
+          }
+      });
+
+      // Gráfico de Reseñas
+      new Chart(document.getElementById('reviewsChart'), {
+          type:'line',
+          data:{
+              labels:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+              datasets:[{
+                  label:'Reseñas Recibidas',
+                  data:[65,59,80,81,56,55],
+                  fill:false,
+                  borderColor:'rgba(153,102,255,1)',
+                  tension:.1
+              }]
+          },
+          options:{
+              responsive:true
+          }
+      });
+
+      // JavaScript for routing and collapsing the menu
+      function loadPage(url) {
+         fetch(url)
+             .then(response => response.text())
+             .then(html => {
+                 document.getElementById('content').innerHTML = html;
+             })
+             .catch(error => console.log('Error al cargar la página:', error));
+       }
+
+       document.getElementById('menu-inicio').addEventListener('click', function(e) {
+           e.preventDefault();
+           loadPage('charts.html');
+       });
+
+       const sidebar = document.getElementById('sidebar');
+       const navbar = document.getElementById('navbar');
+       const content = document.getElementById('content');
+       const toggleButton = document.getElementById('sidebar-toggle');
+
+       toggleButton.addEventListener('click', function() {
+           sidebar.classList.toggle('collapsed');
+           navbar.classList.toggle('collapsed');
+           content.classList.toggle('collapsed');
+       });
+
+       const logoutIcon = document.querySelector('.logout-icon');
+       logoutIcon.addEventListener('click', function() {
+           alert('Has cerrado sesión');
+           // Redirect to login page if necessary
+       });
+   </script>
+</body>
+</html>
