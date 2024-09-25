@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #404ecb;
+        }
+        .login-container {
+            background-color: #2d2d2d;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            width: 80%; /* Aumento del 50% */
+            overflow: hidden;
+        }
+        .login-image {
+            width: 50%;
+            height: 90vh;
+            background-size: cover;
+            background-position: center;
+        }
+        .login-form {
+            padding: 40px;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .login-form h2 {
+            margin-bottom: 30px;
+        }
+        .login-form .form-group {
+            margin-bottom: 20px;
+        }
+        .login-form .btn {
+            width: 100%;
+            background-color: #1a1a1a;
+            border: none;
+        }
+        .login-form a {
+            color: #a7a7a7;
+        }
+        .login-form a:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-image" style="background-image: url('../assets/img/enfermera.jpeg');">
+        </div>
+        <div class="login-form">
+            <h2>INICIO DE SESIÓN</h2>
+            <form>
+                <div class="form-group">
+                    <label for="email">Correo electronico</label>
+                    <input type="email" class="form-control" id="email" placeholder="Correo">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" class="form-control" id="password" placeholder="Contraseña">
+                </div>
+                <button type="submit" class="btn btn-dark">Iniciar Sesión</button>
+                <div class="mt-2">
+                    <span>¿No te has registrado? <a href="Registro.html">Registrate aquí</a></span>
+                </div>
+                <div class="mt-4">
+                    <small><a href="#">Terms of use</a>. <a href="#">Privacy policy</a></small>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

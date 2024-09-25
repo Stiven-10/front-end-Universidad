@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Cliente Visualizador</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .sidebar {
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            padding-top: 20px;
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+        .sidebar.collapsed {
+            width: 70px;
+        }
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            background-color: #343a40;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            z-index: 1000;
+            transition: left 0.3s ease, width 0.3s ease;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+            margin-top: 60px; /* Ajuste para evitar superposición con la barra de navegación */
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .welcome-image {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .welcome-image img {
+            max-width: 200px;
+            border-radius: 50%;
+            margin-top: 20px;
+        }
+        .contact-info {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #e7f1ff; /* Color de fondo suave */
+        }
+        /* Estilo llamativo para el contenedor de "Adquiere Nuestros Servicios" */
+        .services-container {
+            background-color: #d4edda; /* Color verde suave */
+            border-left: 5px solid #28a745; /* Borde verde más oscuro */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <a href="#" id="menu-inicio"><i class="fas fa-home"></i> <span class="menu-text">Inicio</span></a>
+        <a href="#"><i class="fas fa-briefcase"></i> <span class="menu-text">Servicios</span></a>
+        <a href="#"><i class="fas fa-th-list"></i> <span class="menu-text">Servicios Destacados</span></a>
+        <a href="#"><i class="fas fa-star"></i> <span class="menu-text">Reseñas</span></a>
+    </div>
+
+    <div class="navbar" id="navbar">
+        <button class="btn btn-outline-light" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <h4>Panel de Cliente Visualizador</h4>
+        <div class="user-info">
+            <img src="https://via.placeholder.com/40" alt="Foto del usuario">
+            <span>Juan Pérez - cliente</span>
+            <i class="fas fa-sign-out-alt logout-icon" title="Cerrar sesión"></i>
+        </div>
+    </div>
+
+    <div class="content" id="content">
+        <div class="container">
+            <h2 class="text-center">Bienvenidos</h2>
+            <p class="text-justify">Te damos la más cordial bienvenida a nuestro panel de servicios. Aquí podrás gestionar tus solicitudes, consultar los servicios disponibles y acceder a reseñas de otros usuarios. Nuestro objetivo es ofrecerte la mejor atención y asistencia en todas tus necesidades. Estamos comprometidos con brindarte un servicio de alta calidad y hacer tu experiencia con nosotros lo más agradable posible.</p>
+            <div class="welcome-image">
+                <img src="https://via.placeholder.com/200/0000FF/FFFFFF?text=Doctor" alt="Doctor Bienvenida">
+            </div>
+        </div>
+
+        <div class="contact-info container">
+            <h3><i class="fas fa-envelope"></i> Contáctanos</h3>
+            <p>Si tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros. Estamos aquí para ayudarte.</p>
+            <p><strong>Teléfono:</strong> +57 123 456 7890</p>
+            <p><strong>Email:</strong> contacto@servicios.com</p>
+            <p><strong>Dirección:</strong> Calle Ejemplo 123, Bucaramanga</p>
+        </div>
+
+        <div class="container services-container">
+            <h3><i class="fas fa-star"></i> ¡Adquiere Nuestros Servicios!</h3>
+            <p>Explora nuestra amplia gama de servicios diseñados especialmente para ti. No esperes más, ¡comienza tu experiencia con nosotros hoy mismo!</p>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const navbar = document.getElementById('navbar');
+        const content = document.getElementById('content');
+        const toggleButton = document.getElementById('sidebar-toggle');
+
+        toggleButton.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            navbar.classList.toggle('collapsed');
+            content.classList.toggle('collapsed');
+        });
+
+        const logoutIcon = document.querySelector('.logout-icon');
+        logoutIcon.addEventListener('click', function() {
+            alert('Has cerrado sesión');
+            // Redirigir a la página de inicio de sesión si es necesario
+        });
+    </script>
+</body>
+</html>
