@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Cliente - Reseñas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .sidebar {
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            padding-top: 20px;
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+        .sidebar.collapsed {
+            width: 70px;
+        }
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            background-color: #343a40;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            z-index: 1000;
+            transition: left 0.3s ease, width 0.3s ease;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+            margin-top: 60px;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+        /* Estilo para la sección de Reseñas */
+        .review-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+            width: 100%;
+            margin-right: 20px;
+        }
+        .review-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        .review-header {
+            display: flex;
+            align-items: center;
+        }
+        .review-header img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+        .review-body {
+            margin-top: 10px;
+        }
+        .review-body p {
+            font-size: 16px;
+            color: #6c757d;
+        }
+        .rating {
+            color: #f1c40f;
+        }
+        /* Formulario de reseñas */
+        .review-form {
+            background-color: #e9f7ef;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            width: 35%;
+            margin-left: 20px;
+            padding-right: 15px;
+        }
+        .review-form h4 {
+            color: #28a745;
+        }
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+        /* Animaciones */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <a href="#" id="menu-inicio"><i class="fas fa-home"></i> <span class="menu-text">Inicio</span></a>
+        <a href="#"><i class="fas fa-briefcase"></i> <span class="menu-text">Servicios</span></a>
+        <a href="#"><i class="fas fa-th-list"></i> <span class="menu-text">Servicios Destacados</span></a>
+        <a href="#"><i class="fas fa-star"></i> <span class="menu-text">Reseñas</span></a>
+    </div>
+
+    <div class="navbar" id="navbar">
+        <button class="btn btn-outline-light" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <h4>Panel de Cliente - Reseñas</h4>
+        <div class="user-info">
+            <img src="https://via.placeholder.com/40" alt="Foto del usuario">
+            <span>Juan Pérez - cliente</span>
+            <i class="fas fa-sign-out-alt logout-icon" title="Cerrar sesión"></i>
+        </div>
+    </div>
+
+    <div class="content" id="content">
+        <div class="container fade-in">
+            <h2 class="text-center">Reseñas de Clientes</h2>
+
+            <div class="row">
+                <!-- Tarjetas de reseñas -->
+                <div class="review-list" style="width: 60%;">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://via.placeholder.com/50" alt="Cliente">
+                            <div>
+                                <h5>Maria Gómez</h5>
+                                <span class="rating">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="review-body">
+                            <p>Excelente servicio de pediatría. Mi hija fue atendida con mucho cuidado y profesionalismo. 100% recomendado.</p>
+                        </div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://via.placeholder.com/50" alt="Cliente">
+                            <div>
+                                <h5>Carlos López</h5>
+                                <span class="rating">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="review-body">
+                            <p>El servicio de emergencias fue rápido y eficiente. Sin embargo, hubo un pequeño retraso al llegar al hospital. Aún así, quedé satisfecho con la atención brindada.</p>
+                        </div>
+                    </div>
+
+                    <!-- Nuevas reseñas falsas -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://via.placeholder.com/50" alt="Cliente">
+                            <div>
+                                <h5>Lucía Ramírez</h5>
+                                <span class="rating">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="review-body">
+                            <p>Me sentí muy tranquila durante todo el procedimiento. El personal fue amable y atento en todo momento. ¡Excelente experiencia!</p>
+                        </div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://via.placeholder.com/50" alt="Cliente">
+                            <div>
+                                <h5>Jorge Martínez</h5>
+                                <span class="rating">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="review-body">
+                            <p>Buena atención, pero las instalaciones estaban algo congestionadas. El tiempo de espera fue un poco largo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de reseñas -->
+                <div class="review-form">
+                    <h4>Deja tu Reseña</h4>
+                    <form>
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo">
+                        </div>
+                        <div class="form-group">
+                            <label for="reseña">Reseña</label>
+                            <textarea class="form-control" id="reseña" rows="3" placeholder="Escribe tu reseña"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="rating">Puntuación</label>
+                            <select class="form-control" id="rating">
+                                <option>1 estrella</option>
+                                <option>2 estrellas</option>
+                                <option>3 estrellas</option>
+                                <option>4 estrellas</option>
+                                <option>5 estrellas</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn submit-btn">Enviar Reseña</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
