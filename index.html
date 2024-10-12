@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Hospitalario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .btn-custom {
+            transition: all 0.3s ease;
+            border-radius: 30px;
+            padding: 10px 20px;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        .hero-section {
+            background: linear-gradient(rgba(0, 123, 255, 0.7), rgba(0, 123, 255, 0.7)), url('https://via.placeholder.com/1920x1080.png?text=Hospital+Background');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header class="bg-white shadow-sm">
+        <nav class="container py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="m-0">Sistema Hospitalario</h3>
+                <div>
+                    <a href="html/Login.html" class="btn btn-outline-primary me-2 btn-custom">Iniciar Sesión</a>
+                    <a href="html/Registro.html" class="btn btn-primary btn-custom">Registrarme</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="flex-grow-1">
+        <section class="hero-section text-center">
+            <div class="container">
+                <h1 class="display-4 mb-4">Bienvenido a Nuestro Sistema</h1>
+                <p class="lead mb-5">Innovación y eficiencia en la gestión hospitalaria</p>
+                <a href="#features" class="btn btn-light btn-lg btn-custom">Descubre Más</a>
+            </div>
+        </section>
+
+        <section id="features" class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-5">Características Principales</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card h-100 text-center p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-laptop-medical"></i>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title">Gestión Eficiente</h3>
+                                <p class="card-text">Sistema integral para optimizar la atención y administración hospitalaria.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 text-center p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title">Monitoreo en Tiempo Real</h3>
+                                <p class="card-text">Seguimiento constante de pacientes y recursos para una atención óptima.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 text-center p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title">Interfaz Intuitiva</h3>
+                                <p class="card-text">Diseño fácil de usar para médicos y personal administrativo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-5">Nuestras Soluciones</h2>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <img src="https://via.placeholder.com/600x400.png?text=Sistema+de+Gesti%C3%B3n+Hospitalaria" alt="Sistema de gestión hospitalaria" class="card-img-top">
+                            <div class="card-body">
+                                <h3 class="card-title">Sistema de Gestión</h3>
+                                <p class="card-text">Herramientas avanzadas para una administración hospitalaria eficiente y precisa.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <img src="https://via.placeholder.com/600x400.png?text=Tecnolog%C3%ADa+M%C3%A9dica+Avanzada" alt="Equipo médico usando el sistema" class="card-img-top">
+                            <div class="card-body">
+                                <h3 class="card-title">Tecnología Médica</h3>
+                                <p class="card-text">Integración de tecnologías de vanguardia para mejorar la atención al paciente.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-dark text-white py-4 mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Sistema Hospitalario</h5>
+                    <p>Innovación en la gestión de salud</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>Contáctanos</h5>
+                    <p>Email: info@sistemahospitalario.com<br>Tel: (123) 456-7890</p>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 Sistema Hospitalario. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Gestión de Usuarios</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5a623;
+            --background-color: #f4f7fa;
+            --text-color: #333;
+            --sidebar-width: 250px;
+            --sidebar-collapsed-width: 70px;
+            --navbar-height: 60px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: var(--sidebar-width);
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            padding-top: 20px;
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: var(--primary-color);
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+        }
+
+        .sidebar.collapsed a span {
+            display: none;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: var(--navbar-height);
+            background-color: #343a40;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            z-index: 1000;
+            transition: left 0.3s ease;
+        }
+
+        .navbar.collapsed {
+            left: var(--sidebar-collapsed-width);
+        }
+
+        .content {
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+            margin-top: var(--navbar-height);
+        }
+
+        .content.collapsed {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .logout-icon {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .table tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #3a7bd5;
+            border-color: #3a7bd5;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: var(--sidebar-collapsed-width);
+            }
+            .navbar, .content {
+                left: var(--sidebar-collapsed-width);
+                margin-left: var(--sidebar-collapsed-width);
+            }
+            .sidebar a span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <a href="index.html"><i class="fas fa-home"></i> <span>Inicio</span></a>
+        <a href="GestionUsuario.html" class="active"><i class="fas fa-users"></i> <span>Gestión de Usuarios</span></a>
+        <a href="GestionServicios.html"><i class="fas fa-briefcase"></i> <span>Gestión de Servicios</span></a>
+        <a href="TipoServicio.html"><i class="fas fa-th-list"></i> <span>Tipos de Servicios</span></a>
+        <a href="ResenasClientes.html"><i class="fas fa-star"></i> <span>Reseñas</span></a>
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar" id="navbar">
+        <button class="btn btn-outline-light" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <h4>Panel de Administración</h4>
+        <div class="user-info">
+            <img src="https://via.placeholder.com/40" alt="Foto del usuario">
+            <span>Juan Pérez - Administrador</span>
+            <i class="fas fa-sign-out-alt logout-icon" title="Cerrar sesión"></i>
+        </div>
+    </div>
+
+    <div class="content" id="content">
+        <div class="container fade-in">
+            <h2 class="text-center mb-4">Gestión de Usuarios</h2>
+
+            <div class="row">
+                <!-- Lista de usuarios -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Lista de Usuarios</h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Email</th>
+                                            <th>Rol</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="userTableBody">
+                                        <!-- Los usuarios se cargarán dinámicamente aquí -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de usuario -->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Agregar/Editar Usuario</h5>
+                            <form id="userForm">
+                                <input type="hidden" id="userId">
+                                <div class="form-group">
+                                    <label for="nombre">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" placeholder="Ingrese el email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rol">Rol</label>
+                                    <select class="form-control" id="rol" required>
+                                        <option value="">Seleccione un rol</option>
+                                        <option value="Usuario">Usuario</option>
+                                        <option value="Administrador">Administrador</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Guardar Usuario</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.users = [
+                { id: 1, nombre: 'María García', email: 'maria@example.com', rol: 'Usuario' },
+                { id: 2, nombre: 'Carlos Rodríguez', email: 'carlos@example.com', rol: 'Administrador' },
+                { id: 3, nombre: 'Ana Martínez', email: 'ana@example.com', rol: 'Usuario' }
+            ];
+
+            window.renderUsers = function() {
+                userTableBody.innerHTML = '';
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.nombre}</td>
+                        <td>${user.email}</td>
+                        <td>${user.rol}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary mr-2" onclick="editUser(${user.id})">Editar</button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.id})">Eliminar</button>
+                        </td>
+                    `;
+                    userTableBody.appendChild(row);
+                });
+            }
+
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const navbar = document.getElementById('navbar');
+            const content = document.getElementById('content');
+            const userForm = document.getElementById('userForm');
+            const userTableBody = document.getElementById('userTableBody');
+
+
+            function toggleSidebar() {
+                sidebar.classList.toggle('collapsed');
+                navbar.classList.toggle('collapsed');
+                content.classList.toggle('collapsed');
+            }
+
+            function adjustLayout() {
+                const windowWidth = window.innerWidth;
+                if (windowWidth <= 768) {
+                    sidebar.classList.add('collapsed');
+                    navbar.classList.add('collapsed');
+                    content.classList.add('collapsed');
+                } else {
+                    sidebar.classList.remove('collapsed');
+                    navbar.classList.remove('collapsed');
+                    content.classList.remove('collapsed');
+                }
+            }
+
+            function addUser(user) {
+                user.id = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
+                users.push(user);
+                renderUsers();
+            }
+
+            function updateUser(updatedUser) {
+                const index = users.findIndex(u => u.id === updatedUser.id);
+                if (index !== -1) {
+                    users[index] = updatedUser;
+                    renderUsers();
+                }
+            }
+
+            window.editUser = function(id) {
+                const user = users.find(u => u.id === id);
+                if (user) {
+                    document.getElementById('userId').value = user.id;
+                    document.getElementById('nombre').value = user.nombre;
+                    document.getElementById('email').value = user.email;
+                    document.getElementById('rol').value = user.rol;
+                }
+            }
+
+            window.deleteUser = function(id) {
+                if (confirm('¿Está seguro de que desea eliminar este usuario?')) {
+                    users = users.filter(u => u.id !== id);
+                    renderUsers();
+                }
+            }
+
+            userForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const userId = document.getElementById('userId').value;
+                const user = {
+                    id: userId ? parseInt(userId) : null,
+                    nombre: document.getElementById('nombre').value,
+                    email: document.getElementById('email').value,
+                    rol: document.getElementById('rol').value
+                };
+
+                if (userId) {
+                    updateUser(user);
+                } else {
+                    addUser(user);
+                }
+
+                userForm.reset();
+                document.getElementById('userId').value = '';
+            });
+
+            sidebarToggle.addEventListener('click', toggleSidebar);
+            window.addEventListener('resize', adjustLayout);
+
+            adjustLayout();
+            renderUsers();
+
+            const logoutIcon = document.querySelector('.logout-icon');
+            logoutIcon.addEventListener('click', function() {
+                alert('Has cerrado sesión');
+                window.location.href = '../../index.html'; // Ruta actualizada
+            });
+        });
+    </script>
+</body>
+</html>

@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
+            --primary-color: #4a90e2;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7fa;
             display: flex;
@@ -42,8 +43,8 @@
             align-items: center;
             transition: background-color 0.3s ease;
         }
-        .sidebar a:hover {
-            background-color: #495057; /* Color al pasar el mouse */
+        .sidebar a:hover, .sidebar a.active {
+            background-color: var(--primary-color);
         }
         .sidebar a i {
             margin-right: 10px; /* Espaciado entre ícono y texto */
@@ -118,11 +119,11 @@
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <a href="index.html" id="menu-inicio"><i class="fas fa-home"></i> <span class="menu-text">Inicio</span></a>
-        <a href="#"><i class="fas fa-users"></i> <span class="menu-text">Gestión de Usuarios</span></a>
-        <a href="#"><i class="fas fa-briefcase"></i> <span class="menu-text">Gestión de Servicios</span></a>
-        <a href="#"><i class="fas fa-th-list"></i> <span class="menu-text">Tipos de Servicios</span></a>
-        <a href="#"><i class="fas fa-star"></i> <span class="menu-text">Reseñas</span></a>
+        <a href="index.html" id="menu-inicio" class="active"><i class="fas fa-home"></i> <span class="menu-text" >Inicio</span></a>
+        <a href="GestionUsuario.html"><i class="fas fa-users"></i> <span class="menu-text">Gestión de Usuarios</span></a>
+        <a href="GestionServicios.html"><i class="fas fa-briefcase"></i> <span class="menu-text">Gestión de Servicios</span></a>
+        <a href="TipoServicio.html"><i class="fas fa-th-list"></i> <span class="menu-text">Tipos de Servicios</span></a>
+        <a href="ResenasClientes.html"><i class="fas fa-star"></i> <span class="menu-text">Reseñas</span></a>
     </div>
 
     <!-- Navbar -->
@@ -170,7 +171,8 @@
                   <div class="card mb-4 shadow-sm">
                       <div class="card-body">
                           <h5 class="card-title">Reseñas Recibidas</h5>
-                          <canvas id="reviewsChart"></canvas>
+                          <!-- <canvas id="reviewsChart"></canvas> -->
+                          <canvas id="reseñasChart"></canvas>
                       </div>
                   </div>
               </div>
@@ -239,23 +241,76 @@
           }
       });
 
-      // Gráfico de Reseñas
-      new Chart(document.getElementById('reviewsChart'), {
-          type:'line',
-          data:{
-              labels:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
-              datasets:[{
-                  label:'Reseñas Recibidas',
-                  data:[65,59,80,81,56,55],
-                  fill:false,
-                  borderColor:'rgba(153,102,255,1)',
-                  tension:.1
-              }]
-          },
-          options:{
-              responsive:true
-          }
-      });
+    //   // Gráfico de Reseñas
+    //   new Chart(document.getElementById('reviewsChart'), {
+    //       type:'line',
+    //       data:{
+    //           labels:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+    //           datasets:[{
+    //               label:'Reseñas Recibidas',
+    //               data:[65,59,80,81,56,55],
+    //               fill:false,
+    //               borderColor:'rgba(153,102,255,1)',
+    //               tension:.1
+    //           }]
+    //       },
+    //       options:{
+    //           responsive:true
+    //       }
+    //   });
+    // Inicializar gráfico en index.html
+let reseñasChart;
+
+function inicializarGraficoReseñas() {
+    const ctx = document.getElementById('reseñasChart').getContext('2d');
+
+    const datosReseñas = obtenerDatosReseñas();
+
+    reseñasChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: datosReseñas.labels,
+            datasets: [{
+                label: 'Reseñas Recibidas',
+                data: datosReseñas.cantidadPorMes,
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+// Función para obtener los datos de reseñas por mes desde localStorage
+function obtenerDatosReseñas() {
+    const reseñas = JSON.parse(localStorage.getItem('reseñas')) || [];
+
+    // Agrupar las reseñas por mes
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const cantidadPorMes = new Array(12).fill(0); // Array para almacenar la cantidad de reseñas por mes
+
+    reseñas.forEach(reseña => {
+        const fecha = new Date(reseña.fecha || Date.now()); // Si no hay fecha, se usa la fecha actual
+        const mes = fecha.getMonth(); // Obtener el número del mes (0 - 11)
+        cantidadPorMes[mes]++;
+    });
+
+    return {
+        labels: meses,
+        cantidadPorMes: cantidadPorMes
+    };
+}
+
+// Llamar a la función para inicializar el gráfico al cargar index.html
+document.addEventListener('DOMContentLoaded', inicializarGraficoReseñas);
+
 
       // JavaScript for routing and collapsing the menu
       function loadPage(url) {
@@ -286,8 +341,28 @@
        const logoutIcon = document.querySelector('.logout-icon');
        logoutIcon.addEventListener('click', function() {
            alert('Has cerrado sesión');
-           // Redirect to login page if necessary
+           window.location.href = '../../index.html'; // Ruta actualizada
        });
+   </script>
+   <script>
+    function actualizarGraficoReseñas() {
+    const datosReseñas = obtenerDatosReseñas();
+
+    reseñasChart.data.labels = datosReseñas.labels;
+    reseñasChart.data.datasets[0].data = datosReseñas.cantidadPorMes;
+    reseñasChart.update();
+}
+
+   </script>
+   <script>
+    function actualizarGraficoReseñas() {
+    const datosReseñas = obtenerDatosReseñas();
+
+    reseñasChart.data.labels = datosReseñas.labels;
+    reseñasChart.data.datasets[0].data = datosReseñas.cantidadPorMes;
+    reseñasChart.update();
+}
+
    </script>
 </body>
 </html>

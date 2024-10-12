@@ -20,9 +20,7 @@
             background-color: #007bff;
             color: white;
         }
-        .sidebar a.active:hover {
-            background-color: #0056b3;
-        }
+       /* Sidebar */
         .sidebar {
             height: 100vh;
             width: 250px;
@@ -35,7 +33,7 @@
             z-index: 1000;
         }
         .sidebar.collapsed {
-            width: 70px;
+            width: 70px; /* Ancho del sidebar colapsado */
         }
         .sidebar a {
             padding: 15px 25px;
@@ -47,21 +45,39 @@
             transition: background-color 0.3s ease;
         }
         .sidebar a:hover {
-            background-color: #495057;
+            background-color: #495057; /* Color al pasar el mouse */
         }
+        .sidebar a i {
+            margin-right: 10px; /* Espaciado entre ícono y texto */
+        }
+        .sidebar.collapsed a {
+            justify-content: center; /* Centrar contenido en colapsado */
+        }
+        .sidebar.collapsed a span {
+            display: none; /* Ocultar texto en colapsado */
+        }
+        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
-            left: 250px;
+            left: 250px; /* Alineación con el sidebar */
             right: 0;
             background-color: #343a40;
             padding: 15px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            justify-content: space-between; /* Espaciado entre elementos */
+            align-items: center; /* Alinear verticalmente */
             color: white;
-            z-index: 1000;
-            transition: left 0.3s ease, width 0.3s ease;
+            z-index: 1000; /* Asegurar que esté por encima del contenido */
+            transition: left 0.3s ease, width 0.3s ease; /* Transición suave */
+        }
+        .navbar.collapsed {
+            left: 70px; /* Ajustar posición cuando está colapsado */
+            width: calc(100% - 70px); /* Ajustar ancho cuando está colapsado */
+        }
+
+        .navbar h4 {
+            margin: 0; /* Eliminar margen del título */
         }
         .content {
             margin-left: 250px;
@@ -148,19 +164,22 @@
 </head>
 <body>
 
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <a href="index.html" id="menu-inicio"><i class="fas fa-home"></i> <span class="menu-text">Inicio</span></a>
-        <a href="#"><i class="fas fa-briefcase"></i> <span class="menu-text">Servicios</span></a>
-        <a href="ServiciosDestacadosCliente.html"><i class="fas fa-th-list"></i> <span class="menu-text">Servicios Destacados</span></a>
-        <a href="#" class="active"><i class="fas fa-star"></i> <span class="menu-text">Reseñas</span></a>
+        <a href="GestionUsuario.html"><i class="fas fa-users"></i> <span class="menu-text">Gestión de Usuarios</span></a>
+        <a href="GestionServicios.html"><i class="fas fa-briefcase"></i> <span class="menu-text">Gestión de Servicios</span></a>
+        <a href="TipoServicio.html"><i class="fas fa-th-list"></i> <span class="menu-text">Tipos de Servicios</span></a>
+        <a href="ResenasClientes.html" class="active"><i class="fas fa-star"></i> <span class="menu-text">Reseñas</span></a>
     </div>
 
+    <!-- Navbar -->
     <div class="navbar" id="navbar">
         <button class="btn btn-outline-light" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
-        <h4>Panel de Cliente - Reseñas</h4>
+        <h4>Panel de Administración</h4>
         <div class="user-info">
             <img src="https://via.placeholder.com/40" alt="Foto del usuario">
-            <span>Juan Pérez - cliente</span>
+            <span>Juan Pérez - Administrador</span>
             <i class="fas fa-sign-out-alt logout-icon" title="Cerrar sesión"></i>
         </div>
     </div>
@@ -265,11 +284,71 @@
                 </div>
             </div>
         </div>
+        <!-- Placeholder for dynamic content -->
+      <p>Aquí puedes gestionar los usuarios, generar reportes y ajustar configuraciones.</p>
     </div>
 
     <!-- Bootstrap JS and dependencies -->
+     
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/2f34a9571a.js"></script>
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const navbar = document.getElementById('navbar');
+            const content = document.getElementById('content');
+            const body = document.body;
+        
+            function toggleSidebar() {
+                body.classList.toggle('sidebar-collapsed');
+                sidebar.classList.toggle('collapsed');
+                navbar.classList.toggle('collapsed');
+                
+                if (sidebar.classList.contains('collapsed')) {
+                    content.style.marginLeft = '70px';
+                    navbar.style.left = '70px';
+                } else {
+                    content.style.marginLeft = '250px';
+                    navbar.style.left = '250px';
+                }
+            }
+        
+            function adjustLayout() {
+                const windowWidth = window.innerWidth;
+                if (windowWidth <= 768) { // Punto de quiebre para dispositivos móviles
+                    body.classList.add('sidebar-collapsed');
+                    sidebar.classList.add('collapsed');
+                    navbar.classList.add('collapsed');
+                    content.style.marginLeft = '70px';
+                    navbar.style.left = '70px';
+                } else {
+                    body.classList.remove('sidebar-collapsed');
+                    sidebar.classList.remove('collapsed');
+                    navbar.classList.remove('collapsed');
+                    content.style.marginLeft = '250px';
+                    navbar.style.left = '250px';
+                }
+            }
+        
+            // Event listener para el botón de toggle
+            sidebarToggle.addEventListener('click', toggleSidebar);
+        
+            // Event listener para el redimensionamiento de la ventana
+            window.addEventListener('resize', adjustLayout);
+        
+            // Ajustar el layout inicial
+            adjustLayout(); });
+
+            const logoutIcon = document.querySelector('.logout-icon');
+       logoutIcon.addEventListener('click', function() {
+           alert('Has cerrado sesión');
+           window.location.href = '../../index.html'; // Ruta actualizada
+       });
+   </script>
+
 </body>
 </html>

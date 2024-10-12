@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Tipos de Servicios</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5a623;
+            --background-color: #f4f7fa;
+            --text-color: #333;
+            --sidebar-width: 250px;
+            --sidebar-collapsed-width: 70px;
+            --navbar-height: 60px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: var(--sidebar-width);
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            padding-top: 20px;
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: var(--primary-color);
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+        }
+
+        .sidebar.collapsed a span {
+            display: none;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: var(--navbar-height);
+            background-color: #343a40;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            z-index: 1000;
+            transition: left 0.3s ease;
+        }
+
+        .navbar.collapsed {
+            left: var(--sidebar-collapsed-width);
+        }
+
+        .content {
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+            margin-top: var(--navbar-height);
+        }
+
+        .content.collapsed {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .logout-icon {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .table tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #3a7bd5;
+            border-color: #3a7bd5;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: var(--sidebar-collapsed-width);
+            }
+            .navbar, .content {
+                left: var(--sidebar-collapsed-width);
+                margin-left: var(--sidebar-collapsed-width);
+            }
+            .sidebar a span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <a href="index.html"><i class="fas fa-home"></i> <span>Inicio</span></a>
+        <a href="GestionUsuario.html"><i class="fas fa-users"></i> <span>Gestión de Usuarios</span></a>
+        <a href="GestionServicios.html"><i class="fas fa-briefcase"></i> <span>Gestión de Servicios</span></a>
+        <a href="TipoServicio.html" class="active"><i class="fas fa-th-list"></i> <span>Tipos de Servicios</span></a>
+        <a href="ResenasClientes.html"><i class="fas fa-star"></i> <span>Reseñas</span></a>
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar" id="navbar">
+        <button class="btn btn-outline-light" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <h4>Panel de Administración</h4>
+        <div class="user-info">
+            <img src="https://via.placeholder.com/40" alt="Foto del usuario">
+            <span>Juan Pérez - Administrador</span>
+            <i class="fas fa-sign-out-alt logout-icon" title="Cerrar sesión"></i>
+        </div>
+    </div>
+
+    <div class="content" id="content">
+        <div class="container fade-in">
+            <h2 class="text-center mb-4">Tipos de Servicios</h2>
+
+            <div class="row">
+                <!-- Lista de tipos de servicios -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Lista de Tipos de Servicios</h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Descripción</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="serviceTypeTableBody">
+                                        <!-- Los tipos de servicios se cargarán dinámicamente aquí -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de tipo de servicio -->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Agregar/Editar Tipo de Servicio</h5>
+                            <form id="serviceTypeForm">
+                                <input type="hidden" id="serviceTypeId">
+                                <div class="form-group">
+                                    <label for="nombre">Nombre del Tipo de Servicio</label>
+                                    <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre del tipo de servicio" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcion">Descripción</label>
+                                    <textarea class="form-control" id="descripcion" rows="3" placeholder="Ingrese la descripción del tipo de servicio" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Guardar Tipo de Servicio</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let serviceTypes = [
+                { id: 1, nombre: 'Consulta Médica', descripcion: 'Servicios de consulta médica general y especializada' },
+                { id: 2, nombre: 'Procedimientos Dentales', descripcion: 'Servicios relacionados con la salud dental' },
+                { id: 3, nombre: 'Terapia Física', descripcion: 'Servicios de rehabilitación y terapia física' }
+            ];
+
+            const renderServiceTypes = function() {
+                const serviceTypeTableBody = document.getElementById('serviceTypeTableBody');
+                serviceTypeTableBody.innerHTML = '';
+                serviceTypes.forEach(type => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${type.id}</td>
+                        <td>${type.nombre}</td>
+                        <td>${type.descripcion}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary mr-2" onclick="editServiceType(${type.id})">Editar</button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteServiceType(${type.id})">Eliminar</button>
+                        </td>
+                    `;
+                    serviceTypeTableBody.appendChild(row);
+                });
+            }
+
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const navbar = document.getElementById('navbar');
+            const content = document.getElementById('content');
+            const serviceTypeForm = document.getElementById('serviceTypeForm');
+
+            function toggleSidebar() {
+                sidebar.classList.toggle('collapsed');
+                navbar.classList.toggle('collapsed');
+                content.classList.toggle('collapsed');
+            }
+
+            function adjustLayout() {
+                const windowWidth = window.innerWidth;
+                if (windowWidth <= 768) {
+                    sidebar.classList.add('collapsed');
+                    navbar.classList.add('collapsed');
+                    content.classList.add('collapsed');
+                } else {
+                    sidebar.classList.remove('collapsed');
+                    navbar.classList.remove('collapsed');
+                    content.classList.remove('collapsed');
+                }
+            }
+
+            function addServiceType(type) {
+                type.id = serviceTypes.length > 0 ? Math.max(...serviceTypes.map(t => t.id)) + 1 : 1;
+                serviceTypes.push(type);
+                renderServiceTypes();
+            }
+
+            function updateServiceType(updatedType) {
+                const index = serviceTypes.findIndex(t => t.id === updatedType.id);
+                if (index !== -1) {
+                    serviceTypes[index] = updatedType;
+                    renderServiceTypes();
+                }
+            }
+
+            window.editServiceType = function(id) {
+                const type = serviceTypes.find(t => t.id === id);
+                if (type) {
+                    document.getElementById('serviceTypeId').value = type.id;
+                    document.getElementById('nombre').value = type.nombre;
+                    document.getElementById('descripcion').value = type.descripcion;
+                }
+            }
+
+            window.deleteServiceType = function(id) {
+                if (confirm('¿Está seguro de que desea eliminar este tipo de servicio?')) {
+                    serviceTypes = serviceTypes.filter(t => t.id !== id);
+                    renderServiceTypes();
+                }
+            }
+
+            serviceTypeForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const serviceTypeId = document.getElementById('serviceTypeId').value;
+                const serviceType = {
+                    id: serviceTypeId ? parseInt(serviceTypeId) : null,
+                    nombre: document.getElementById('nombre').value,
+                    descripcion: document.getElementById('descripcion').value
+                };
+
+                if (serviceTypeId) {
+                    updateServiceType(serviceType);
+                } else {
+                    addServiceType(serviceType);
+                }
+
+                serviceTypeForm.reset();
+                document.getElementById('serviceTypeId').value = '';
+            });
+
+            sidebarToggle.addEventListener('click', toggleSidebar);
+            window.addEventListener('resize', adjustLayout);
+
+            adjustLayout();
+            renderServiceTypes();
+        });
+    </script>
+</body>
+</html>

@@ -20,7 +20,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
-            width: 80%; /* Aumento del 50% */
+            width: 80%;
             overflow: hidden;
         }
         .login-image {
@@ -64,7 +64,7 @@
             <h2>INICIO DE SESIÓN</h2>
             <form>
                 <div class="form-group">
-                    <label for="email">Correo electronico</label>
+                    <label for="email">Correo electrónico</label>
                     <input type="email" class="form-control" id="email" placeholder="Correo">
                 </div>
                 <div class="form-group">
@@ -73,10 +73,7 @@
                 </div>
                 <button type="submit" class="btn btn-dark">Iniciar Sesión</button>
                 <div class="mt-2">
-                    <span>¿No te has registrado? <a href="Registro.html">Registrate aquí</a></span>
-                </div>
-                <div class="mt-4">
-                    <small><a href="#">Terms of use</a>. <a href="#">Privacy policy</a></small>
+                    <span>¿No te has registrado? <a href="Registro.html">Regístrate aquí</a></span>
                 </div>
             </form>
         </div>
@@ -86,5 +83,50 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- ... resto del código ... -->
+
+<!-- Script para manejar el inicio de sesión -->
+<script>
+    // Crear un usuario administrador "quemado" si no existe en localStorage
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    const admin = usuarios.find(u => u.email === 'admin@admin.com' && u.password === 'admin');
+    if (!admin) {
+        usuarios.push({
+            email: 'admin@admin.com',
+            password: 'admin',
+            rol: 'admin'
+        });
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    }
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evitar el envío del formulario
+
+        // Obtener los datos del formulario
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Obtener el array de usuarios desde localStorage
+        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+        // Buscar al usuario en el array
+        const usuario = usuarios.find(u => u.email === email && u.password === password);
+
+        if (usuario) {
+            // Si las credenciales son correctas, redireccionar al index.html en la ruta correcta
+            if (usuario.rol === 'admin') {
+                alert('Bienvenido, administrador');
+                window.location.href = '../html/Administrador/index.html'; // Ruta actualizada
+            } else {
+                alert('Bienvenido, usuario');
+                window.location.href = '../html/Usuario/index.html'; // Ruta actualizada
+            }
+            
+        } else {
+            alert('Correo electrónico o contraseña incorrectos');
+        }
+    });
+</script>
 </body>
 </html>
